@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VitaSearch — Vitamin Recommendation</title>
+
+  <!-- Google Fonts: Playfair Display (display) + DM Sans (body) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap"
+    rel="stylesheet"
+  />
+
+  <!-- Main stylesheet -->
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ░░░ BACKGROUND DECORATIVE BLOBS ░░░ -->
+  <div class="bg-blob blob-1" aria-hidden="true"></div>
+  <div class="bg-blob blob-2" aria-hidden="true"></div>
+  <div class="bg-blob blob-3" aria-hidden="true"></div>
+
+  <!-- ░░░ HEADER ░░░ -->
+  <header class="site-header">
+    <div class="logo">
+      <span class="logo-icon">✦</span>
+      <span class="logo-text">VitaSearch</span>
+    </div>
+    <p class="tagline">Discover the vitamins your body needs</p>
+  </header>
+
+  <!-- ░░░ MAIN CONTENT ░░░ -->
+  <main class="main-container">
+
+    <!-- Search Section -->
+    <section class="search-section" aria-label="Search for vitamin recommendations">
+      <h1 class="hero-title">
+        What's on your<br /><em>mind today?</em>
+      </h1>
+      <p class="hero-subtitle">
+        Enter a symptom, condition, or food — like <strong>eye fatigue</strong>,
+        <strong>headache</strong>, or <strong>strawberry</strong>.
+      </p>
+
+      <!-- Search form -->
+      <div class="search-bar" role="search">
+        <input
+          type="text"
+          id="searchInput"
+          class="search-input"
+          placeholder="e.g. eye fatigue, carrot, headache…"
+          autocomplete="off"
+          aria-label="Enter symptom, disease, or food"
+        />
+        <button id="searchBtn" class="search-btn" aria-label="Search">
+          <span class="btn-text">Search</span>
+          <span class="btn-icon" aria-hidden="true">→</span>
+        </button>
+      </div>
+
+      <!-- Quick suggestion chips -->
+      <div class="chips" aria-label="Quick suggestions">
+        <span class="chip-label">Try:</span>
+        <button class="chip" data-query="eye fatigue">eye fatigue</button>
+        <button class="chip" data-query="headache">headache</button>
+        <button class="chip" data-query="strawberry">strawberry</button>
+        <button class="chip" data-query="bone health">bone health</button>
+        <button class="chip" data-query="immune system">immune system</button>
+        <button class="chip" data-query="energy">energy</button>
+      </div>
+    </section>
+
+    <!-- ░░░ STATES ░░░ -->
+
+    <!-- Loading State -->
+    <div id="loadingState" class="state-loading" hidden aria-live="polite" aria-busy="true">
+      <div class="spinner-ring"></div>
+      <p>Analysing your query…</p>
+    </div>
+
+    <!-- Error State -->
+    <div id="errorState" class="state-error" hidden role="alert">
+      <span class="error-icon">⚠</span>
+      <p id="errorMessage">Something went wrong. Please try again.</p>
+    </div>
+
+    <!-- Empty State (no results) -->
+    <div id="emptyState" class="state-empty" hidden>
+      <span class="empty-icon">🔍</span>
+      <p>No vitamins matched your search. Try a different term.</p>
+    </div>
+
+    <!-- ░░░ RESULTS AREA ░░░ -->
+    <section id="resultsSection" class="results-section" hidden aria-live="polite">
+      <div class="results-header">
+        <h2 class="results-title">
+          Results for <em id="resultQuery"></em>
+        </h2>
+        <span id="resultCount" class="result-count"></span>
+      </div>
+
+      <!-- Vitamin cards are injected here by JavaScript -->
+      <div id="resultsGrid" class="results-grid"></div>
+    </section>
+
+  </main>
+
+  <!-- ░░░ FOOTER ░░░ -->
+  <footer class="site-footer">
+    <p>VitaSearch — For informational purposes only. Consult a healthcare professional for medical advice.</p>
+  </footer>
+
+  <!-- Main JavaScript file -->
+  <script src="script.js"></script>
+</body>
+</html>
