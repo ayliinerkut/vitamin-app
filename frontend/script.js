@@ -13,6 +13,8 @@
 // Change this URL if your backend runs on a different port or host.
 // ─────────────────────────────────────────────
 const API_BASE_URL = 'http://localhost:3001';
+const API_URL = "https://vitamin-app.onrender.com";
+// Örnek kullanım: fetch(`${API_URL}/recommend`)
 
 // ─────────────────────────────────────────────
 // DOM ELEMENT REFERENCES
