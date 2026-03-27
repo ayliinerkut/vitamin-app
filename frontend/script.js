@@ -120,7 +120,7 @@ async function handleSearch() {
   } catch (error) {
     // Network failures or server errors land here
     if (error.message === 'Failed to fetch') {
-      showState('error', 'Cannot connect to the backend. Make sure the NestJS server is running on port 3000.');
+      showState('error', 'Cannot connect to the backend. Make sure the NestJS server is running on port 3001.');
     } else {
       showState('error', error.message || 'An unexpected error occurred.');
     }
