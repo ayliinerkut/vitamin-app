@@ -1,24 +1,7 @@
 
-// Dinamik API URL Belirleme
-const API_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
-  ? 'http://localhost:3001'
-<<<<<<< HEAD
-  : 'https://vitamin-app.onrender.com'; // Burası senin ilk fotodaki çalışan linkin olmalı
-=======
-  : 'https://vitamin-app.onrender.com';
->>>>>>> 815bbc2
 
-// Örnek Fetch Fonksiyonu
-async function getVitaminRecommend(query) {
-    try {
-        const response = await fetch(`${API_URL}/recommend?q=${encodeURIComponent(query)}`);
-        const data = await response.json();
-        console.log("Gelen Veri:", data);
-        return data;
-    } catch (error) {
-        console.error("Backend'e bağlanırken hata oluştu:", error);
-    }
-}
+
+
 
 /**
 
@@ -35,7 +18,9 @@ async function getVitaminRecommend(query) {
 // CONFIGURATION
 // Change this URL if your backend runs on a different port or host.
 // ─────────────────────────────────────────────
-const API_BASE_URL = 'http://localhost:3001';
+const API_BASE_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+  ? 'http://localhost:3001'
+  : 'https://vitamin-app.onrender.com';
 
 // Örnek kullanım: fetch(`${API_URL}/recommend`)
 // Eğer tarayıcıda localhost açıldıysa 3001'e git, yoksa Render'a git:
