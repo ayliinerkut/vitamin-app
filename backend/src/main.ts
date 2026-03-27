@@ -13,7 +13,7 @@ async function bootstrap() {
     origin: '*',
   });
 
-  const port = 3000;
+  const port = 3001;
   await app.listen(port);
   console.log(`✅ Vitamin API is running at http://localhost:${port}`);
 }
