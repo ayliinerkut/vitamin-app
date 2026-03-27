@@ -4,12 +4,6 @@
 import { Injectable } from '@nestjs/common';
 import { Vitamin, RecommendResponse } from './vitamin.interface';
 
-// ─────────────────────────────────────────────
-// MOCK VITAMIN DATABASE
-// Each vitamin entry has:
-//   - name, benefits, foods, deficiency
-//   - keywords: triggers that map user inputs to this vitamin
-// ─────────────────────────────────────────────
 const VITAMIN_DATABASE: Array<Vitamin & { keywords: string[] }> = [
   {
     name: 'Vitamin A',
@@ -19,7 +13,7 @@ const VITAMIN_DATABASE: Array<Vitamin & { keywords: string[] }> = [
     deficiency:
       'Night blindness, dry eyes, increased infections, dry skin, and in severe cases, complete vision loss.',
     keywords: [
-      'eye', 'eyes', 'vision', 'sight', 'night', 'blind', 'fatigue',
+      'vitamin a', 'eye', 'eyes', 'vision', 'sight', 'night', 'blind', 'fatigue',
       'carrot', 'spinach', 'skin', 'dry skin', 'immune', 'kale', 'pumpkin',
       'liver', 'sweet potato', 'retina',
     ],
@@ -32,6 +26,7 @@ const VITAMIN_DATABASE: Array<Vitamin & { keywords: string[] }> = [
     deficiency:
       'Fatigue, anemia, nerve damage, depression, mouth sores, memory problems, and poor concentration.',
     keywords: [
+      'vitamin b', 'b1', 'b2', 'b3', 'b6', 'b12', 'folate', 'folic',
       'energy', 'fatigue', 'tired', 'tiredness', 'brain', 'memory', 'nerve',
       'anemia', 'anaemia', 'headache', 'depression', 'mood', 'banana',
       'egg', 'eggs', 'grain', 'stress', 'focus', 'concentration', 'avocado',
@@ -45,9 +40,9 @@ const VITAMIN_DATABASE: Array<Vitamin & { keywords: string[] }> = [
     deficiency:
       'Scurvy (bleeding gums, bruising), poor wound healing, weakened immunity, frequent colds, and joint pain.',
     keywords: [
-      'immune', 'immunity', 'cold', 'flu', 'infection', 'skin', 'collagen',
+      'vitamin c', 'immune', 'immunity', 'cold', 'flu', 'infection', 'skin', 'collagen',
       'orange', 'strawberry', 'lemon', 'kiwi', 'wound', 'healing',
-      'gum', 'bleeding', 'antioxidant', 'broccoli', 'tomato', 'pepper',
+      'gum', 'bleeding', 'antioxidant', 'broccoli', 'tomato', 'pepper', 'scurvy',
     ],
   },
   {
@@ -58,7 +53,7 @@ const VITAMIN_DATABASE: Array<Vitamin & { keywords: string[] }> = [
     deficiency:
       'Rickets in children, osteoporosis in adults, weak muscles, fatigue, depression, and increased risk of infections.',
     keywords: [
-      'bone', 'bones', 'teeth', 'calcium', 'sun', 'sunlight', 'muscle',
+      'vitamin d', 'bone', 'bones', 'teeth', 'calcium', 'sun', 'sunlight', 'muscle',
       'weakness', 'depression', 'mood', 'salmon', 'milk', 'mushroom',
       'joint', 'back pain', 'rickets', 'osteoporosis', 'hair loss',
     ],
@@ -67,11 +62,11 @@ const VITAMIN_DATABASE: Array<Vitamin & { keywords: string[] }> = [
     name: 'Vitamin E',
     benefits:
       'A fat-soluble antioxidant that protects cells from damage. Supports immune function, skin health, eye health, and helps prevent inflammation.',
-    foods: ['almond', 'sunflower seeds', 'avocado', 'olive oil', 'spinach', 'peanut', 'hazelnut'],
+    foods: ['almond', 'sunflower seeds', 'avocado','olive oil', 'spinach', 'peanut', 'hazelnut'],
     deficiency:
       'Nerve damage, muscle weakness, vision problems, weakened immune response, and skin dryness.',
     keywords: [
-      'antioxidant', 'skin', 'aging', 'eye', 'eyes', 'immune', 'inflammation',
+      'vitamin e', 'antioxidant', 'skin', 'aging', 'eye', 'eyes', 'immune', 'inflammation',
       'almond', 'avocado', 'oil', 'sunflower', 'nerve', 'muscle',
       'cell', 'protection', 'hair', 'nails',
     ],
@@ -84,7 +79,7 @@ const VITAMIN_DATABASE: Array<Vitamin & { keywords: string[] }> = [
     deficiency:
       'Excessive bleeding, easy bruising, weak bones, heavy menstrual periods, and cardiovascular complications.',
     keywords: [
-      'blood', 'clotting', 'bleeding', 'bruise', 'bruising', 'bone',
+      'vitamin k', 'blood', 'clotting', 'bleeding', 'bruise', 'bruising', 'bone',
       'wound', 'healing', 'kale', 'spinach', 'broccoli', 'heart',
       'cardiovascular', 'fracture', 'osteoporosis',
     ],
@@ -93,29 +88,23 @@ const VITAMIN_DATABASE: Array<Vitamin & { keywords: string[] }> = [
 
 @Injectable()
 export class RecommendService {
-  /**
-   * Finds relevant vitamins based on a user's query string.
-   * Matching is done by normalizing the query and checking
-   * if any keyword from our database appears in it, or vice versa.
-   */
   getRecommendations(query: string): RecommendResponse {
-    // Normalize: lowercase and trim whitespace
     const normalizedQuery = query.toLowerCase().trim();
+    const queryWords = normalizedQuery.split(/\s+/);
 
-    // Collect matching vitamins (no duplicates)
     const matched: Vitamin[] = [];
 
     for (const vitamin of VITAMIN_DATABASE) {
       const isMatch = vitamin.keywords.some((keyword) => {
-        // Check if the keyword is contained in the query OR query in keyword
+        const kw = keyword.toLowerCase();
         return (
-          normalizedQuery.includes(keyword.toLowerCase()) ||
-          keyword.toLowerCase().includes(normalizedQuery)
+          normalizedQuery.includes(kw) ||
+          kw.includes(normalizedQuery) ||
+          queryWords.some((word) => kw.includes(word) || word.includes(kw))
         );
       });
 
       if (isMatch) {
-        // Push only the public fields (exclude internal `keywords`)
         matched.push({
           name: vitamin.name,
           benefits: vitamin.benefits,
@@ -125,9 +114,6 @@ export class RecommendService {
       }
     }
 
-    return {
-      input: query,
-      vitamins: matched,
-    };
+    return { input: query, vitamins: matched };
   }
 }
