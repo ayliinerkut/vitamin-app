@@ -1,5 +1,25 @@
+
+// Dinamik API URL Belirleme
+// Eğer lokaldeysen localhost'a, Render'daysan canlı backend linkine gider.
+const API_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+  ? 'http://localhost:3001' 
+  : 'https://vitamin-app.onrender.com'; 
+
+// Örnek Fetch Fonksiyonu (Bunu kendi arama mantığına göre düzenleyebilirsin)
+async function getVitaminRecommend(query) {
+    try {
+        const response = await fetch(`${API_URL}/recommend?q=${encodeURIComponent(query)}`);
+        const data = await response.json();
+        console.log("Gelen Veri:", data);
+        return data;
+    } catch (error) {
+        console.error("Backend'e bağlanırken hata oluştu:", error);
+    }
+}
+
 /**
- * script.js — VitaSearch Frontend Logic
+
+* script.js — VitaSearch Frontend Logic
  *
  * Responsibilities:
  *  1. Listen for search events (button click, Enter key, chip click)
@@ -13,8 +33,12 @@
 // Change this URL if your backend runs on a different port or host.
 // ─────────────────────────────────────────────
 const API_BASE_URL = 'http://localhost:3001';
-const API_URL = "https://vitamin-app.onrender.com";
+
 // Örnek kullanım: fetch(`${API_URL}/recommend`)
+// Eğer tarayıcıda localhost açıldıysa 3001'e git, yoksa Render'a git:
+
+
+// Artık fetch yaparken sadece API_URL kullanman yeterli
 
 // ─────────────────────────────────────────────
 // DOM ELEMENT REFERENCES
