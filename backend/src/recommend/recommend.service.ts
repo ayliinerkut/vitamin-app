@@ -90,17 +90,13 @@ const VITAMIN_DATABASE: Array<Vitamin & { keywords: string[] }> = [
 export class RecommendService {
   getRecommendations(query: string): RecommendResponse {
     const normalizedQuery = query.toLowerCase().trim();
-    const queryWords = normalizedQuery.split(/\s+/).filter((w) => w.length > 1);
 
     const matched: Vitamin[] = [];
 
     for (const vitamin of VITAMIN_DATABASE) {
       const isMatch = vitamin.keywords.some((keyword) => {
         const kw = keyword.toLowerCase();
-        return (
-          normalizedQuery.includes(kw) ||
-          queryWords.some((word) => word.length >= 3 && kw.includes(word))
-        );
+        return normalizedQuery.includes(kw) || kw.includes(normalizedQuery);
       });
 
       if (isMatch) {
